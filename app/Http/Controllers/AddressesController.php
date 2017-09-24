@@ -13,7 +13,13 @@ class AddressesController extends Controller
     {
         $addresses = Address::all();
 
-        return view('welcome',compact('addresses'));
+        
+        if($addresses->count()){
+            return view('welcome',compact('addresses'));
+        }else{
+            $message="search not found";
+           return view('welcome',compact('message'));
+        }
     }
 
     public function store()

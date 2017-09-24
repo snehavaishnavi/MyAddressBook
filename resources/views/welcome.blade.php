@@ -22,73 +22,76 @@
             <div class="row">
                 <div class="col-sm-2" >
                     <div class="dropdown">
-                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">
-                        Sort By
-                        <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                            <li><a href="order/name">Sort By Name</a></li>
-                            <li><a href="order/city">Sort By City</a></li>
-                            <li><a href="order/state">Sort By State</a></li>
-                        </ul>
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+                            Sort By
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="order/name">Sort By Name</a></li>
+                                <li><a href="order/city">Sort By City</a></li>
+                                <li><a href="order/state">Sort By State</a></li>
+                            </ul>
+                        </div>
+                    </div>  
+                    <div class="col-sm-4" ><input type="text" name="search" class="form-control" placeholder="Search by Name,Address,City,State or Zipcode"></div>
+                    <div class="col-sm-2" ><button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Search</button></div>
+                </form>
+                <div class="col-sm-2" >
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myNewAddress">Add New Address</button>
+                </div>
+                <div class="col-sm-2">
+                    <a class="btn btn-info" href="{{URL::previous() }}" >back</a>
+                    <div>
                     </div>
-                </div>  
-                <div class="col-sm-4" ><input type="text" name="search" class="form-control" placeholder="Search by Name,Address,City,State or Zipcode"></div>
-                <div class="col-sm-2" ><button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Search</button></div>
-            </form>
-            <div class="col-sm-2" >
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myNewAddress">Add New Address</button>
-            </div>
-            <div class="col-sm-2">
-            <a class="btn btn-info" href="{{URL::previous() }}" >back</a>
-            <div>
-        </div>
-        </div>
+                </div>
+            </br>
         </br>
-        </br>
-        </br>
+    </br>
 
-       @if(!is_null(Session::get('addresses')))
+    @if(!is_null(Session::get('addresses')))
 
-         <?php $addresses = Session::get('addresses') ?>
+    <?php $addresses = Session::get('addresses') ?>
 
-         @elseif(!is_null(Session::get('message')))
-           <h2>{{Session::get('message')}}</h2> 
+    @elseif(!is_null(Session::get('message')))
+    <h2>{{Session::get('message')}}</h2> 
 
-        @endif
-        <h2>List of Address </h2>
-        <ul class="list-group">
-            @foreach ($addresses as $address)
-            <li class="list-group-item"> 
-                Name:       {{$address->Name}} </br>
-                Address:    {{$address->Address_1}} {{$address->Address_2}}</br> 
-                City:       {{$address->City}} </br>
-                State:      {{$address->State}} </br>
-                Zipcode:    {{$address->ZipCode}}   
+    @endif
 
-                <a class= "badge" href="/delete/{{$address->id}}">Delete</a>
-                <a class= "badge" href="/editAddress/{{$address->id}}" data-toggle="modal" data-target="#myEditAddress">Edit</a></br>
-            </li>
-            @endforeach
+    
+    @if(isset($addresses))
+    <h2>List of Address </h2>
+    <ul class="list-group">
+        @foreach ($addresses as $address)
+        <li class="list-group-item"> 
+            Name:       {{$address->Name}} </br>
+            Address:    {{$address->Address_1}} {{$address->Address_2}}</br> 
+            City:       {{$address->City}} </br>
+            State:      {{$address->State}} </br>
+            Zipcode:    {{$address->ZipCode}}   
+            <a class= "badge" href="/delete/{{$address->id}}">Delete</a>
+            <a class= "badge" href="/editAddress/{{$address->id}}" data-toggle="modal" data-target="#myEditAddress">Edit</a></br>
+        </li>
+        @endforeach
         </ul>
+        @else
+            <h1 align="center">Address List empty</h1>
+        @endif
+
+</div>
+<!-- Modal for Add New Address-->
+<div class="modal fade" id="myNewAddress" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        @include('NewAddress')    
     </div>
-
-    <!-- Modal for Add New Address-->
-    <div class="modal fade" id="myNewAddress" role="dialog">
-        <div class="modal-dialog">
-
-          <!-- Modal content-->
-          @include('NewAddress')
-        </div>
-    </div>
-
+</div>
 <!-- Modal for editing Address-->
-    <div class="modal fade" id="myEditAddress" role="dialog">
-        <div class="modal-dialog">
-
-          <!-- Modal content-->
-          @include('editAddress')
-        </div>
+<div class="modal fade" id="myEditAddress" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        @if(isset($addresses))
+            @include('editAddress')
+        @endif
     </div>
-
+</div>
 </body>
 </html> 
